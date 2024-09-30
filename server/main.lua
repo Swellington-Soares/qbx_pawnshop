@@ -37,10 +37,10 @@ RegisterNetEvent('qb-pawnshop:server:sellPawnItems', function(itemName, itemAmou
         else
             Player.Functions.AddMoney('cash', totalPrice)
         end
-        exports.qbx_core:Notify(src, Lang:t('success.sold', { value = tonumber(itemAmount), value2 = exports.ox_inventory:Items()[itemName].label, value3 = totalPrice }), 'success')
+        exports.qbx_core:Notify(src, locale('success.sold', tonumber(itemAmount), exports.ox_inventory:Items()[itemName].label, totalPrice ), 'success')
         TriggerClientEvent('inventory:client:ItemBox', src, exports.ox_inventory:Items()[itemName], 'remove')
     else
-        exports.qbx_core:Notify(src, Lang:t('error.no_items'), 'error')
+        exports.qbx_core:Notify(src, locale('error.no_items'), 'error')
     end
     TriggerClientEvent('qb-pawnshop:client:openMenu', src)
 end)
@@ -52,9 +52,9 @@ RegisterNetEvent('qb-pawnshop:server:meltItemRemove', function(itemName, itemAmo
         TriggerClientEvent('inventory:client:ItemBox', src, exports.ox_inventory:Items()[itemName], 'remove')
         local meltTime = (tonumber(itemAmount) * item.time)
         TriggerClientEvent('qb-pawnshop:client:startMelting', src, item, itemAmount, (meltTime * 60000 / 1000))
-        exports.qbx_core:Notify(src, Lang:t('info.melt_wait', { value = meltTime }), 'primary')
+        exports.qbx_core:Notify(src, locale('info.melt_wait', meltTime ), 'primary')
     else
-        exports.qbx_core:Notify(src, Lang:t('error.no_items'), 'error')
+        exports.qbx_core:Notify(src, locale('error.no_items'), 'error')
     end
 end)
 
@@ -77,7 +77,7 @@ RegisterNetEvent('qb-pawnshop:server:pickupMelted', function(item)
             local rewardAmount = m.amount
             if Player.Functions.AddItem(m.item, (meltedAmount * rewardAmount)) then
                 TriggerClientEvent('inventory:client:ItemBox', src, exports.ox_inventory:Items()[m.item], 'add')
-                exports.qbx_core:Notify(src, Lang:t('success.items_received', { value = (meltedAmount * rewardAmount), value2 = exports.ox_inventory:Items()[m.item].label }), 'success')
+                exports.qbx_core:Notify(src, locale('success.items_received', (meltedAmount * rewardAmount), exports.ox_inventory:Items()[m.item].label), 'success')
             else
                 TriggerClientEvent('qb-pawnshop:client:openMenu', src)
                 return
