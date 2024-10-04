@@ -14,7 +14,7 @@ CreateThread(function()
         SetBlipAsShortRange(blip, true)
         SetBlipColour(blip, 5)
         BeginTextCommandSetBlipName('STRING')
-        AddTextComponentSubstringPlayerName(Lang:t('info.title'))
+        AddTextComponentSubstringPlayerName(locale('info.title'))
         EndTextCommandSetBlipName(blip)
     end
 end)
@@ -50,10 +50,10 @@ CreateThread(function()
                 onEnter = function()
                     lib.registerContext({
                         id = 'open_pawnShopMain',
-                        title = Lang:t('info.title'),
+                        title = locale('info.title'),
                         options = {
                             {
-                                title = Lang:t('info.open_pawn'),
+                                title = locale('info.open_pawn'),
                                 event = 'qb-pawnshop:client:openMenu'
                             }
                         }
@@ -73,8 +73,8 @@ RegisterNetEvent('qb-pawnshop:client:openMenu', function()
         if GetClockHours() >= config.timeOpen and GetClockHours() <= config.timeClosed then
             local pawnShop = {
                 {
-                    title = Lang:t('info.sell'),
-                    description = Lang:t('info.sell_pawn'),
+                    title = locale('info.sell'),
+                    description = locale('info.sell_pawn'),
                     event = 'qb-pawnshop:client:openPawn',
                     args = {
                         items = config.pawnItems
@@ -83,8 +83,8 @@ RegisterNetEvent('qb-pawnshop:client:openMenu', function()
             }
             if not isMelting then
                 pawnShop[#pawnShop + 1] = {
-                    title = Lang:t('info.melt'),
-                    description = Lang:t('info.melt_pawn'),
+                    title = locale('info.melt'),
+                    description = locale('info.melt_pawn'),
                     event = 'qb-pawnshop:client:openMelt',
                     args = {
                         items = config.meltingItems
@@ -93,7 +93,7 @@ RegisterNetEvent('qb-pawnshop:client:openMenu', function()
             end
             if canTake then
                 pawnShop[#pawnShop + 1] = {
-                    title = Lang:t('info.melt_pickup'),
+                    title = locale('info.melt_pickup'),
                     serverEvent = 'qb-pawnshop:server:pickupMelted',
                     args = {
                         items = meltedItem
@@ -102,18 +102,18 @@ RegisterNetEvent('qb-pawnshop:client:openMenu', function()
             end
             lib.registerContext({
                 id = 'open_pawnShop',
-                title = Lang:t('info.title'),
+                title = locale('info.title'),
                 options = pawnShop
             })
             lib.showContext('open_pawnShop')
         else
-            exports.qbx_core:Notify(Lang:t('info.pawn_closed', { value = config.timeOpen, value2 = config.timeClosed }))
+            exports.qbx_core:Notify(locale('info.pawn_closed', config.timeOpen,  config.timeClosed ))
         end
     else
         local pawnShop = {
             {
-                title = Lang:t('info.sell'),
-                description = Lang:t('info.sell_pawn'),
+                title = locale('info.sell'),
+                description = locale('info.sell_pawn'),
                 event = 'qb-pawnshop:client:openPawn',
                 args = {
                     items = config.pawnItems
@@ -122,8 +122,8 @@ RegisterNetEvent('qb-pawnshop:client:openMenu', function()
         }
         if not isMelting then
             pawnShop[#pawnShop + 1] = {
-                title = Lang:t('info.melt'),
-                description = Lang:t('info.melt_pawn'),
+                title = locale('info.melt'),
+                description = locale('info.melt_pawn'),
                 event = 'qb-pawnshop:client:openMelt',
                 args = {
                     items = config.meltingItems
@@ -132,7 +132,7 @@ RegisterNetEvent('qb-pawnshop:client:openMenu', function()
         end
         if canTake then
             pawnShop[#pawnShop + 1] = {
-                title = Lang:t('info.melt_pickup'),
+                title = locale('info.melt_pickup'),
                 serverEvent = 'qb-pawnshop:server:pickupMelted',
                 args = {
                     items = meltedItem
@@ -141,7 +141,7 @@ RegisterNetEvent('qb-pawnshop:client:openMenu', function()
         end
         lib.registerContext({
             id = 'open_pawnShop',
-            title = Lang:t('info.title'),
+            title = locale('info.title'),
             options = pawnShop
         })
         lib.showContext('open_pawnShop')
@@ -158,7 +158,7 @@ RegisterNetEvent('qb-pawnshop:client:openPawn', function(data)
                 if v.name == data.items[i].item then
                     pawnMenu[#pawnMenu + 1] = {
                         title = exports.ox_inventory:Items()[v.name].label,
-                        description = Lang:t('info.sell_items', { value = data.items[i].price }),
+                        description = locale('info.sell_items', data.items[i].price ),
                         event = 'qb-pawnshop:client:pawnitems',
                         args = {
                             label = exports.ox_inventory:Items()[v.name].label,
@@ -173,7 +173,7 @@ RegisterNetEvent('qb-pawnshop:client:openPawn', function(data)
         lib.registerContext({
             id = 'open_pawnMenu',
             menu = 'open_pawnShop',
-            title = Lang:t('info.title'),
+            title = locale('info.title'),
             options = pawnMenu
         })
         lib.showContext('open_pawnMenu')
@@ -190,7 +190,7 @@ RegisterNetEvent('qb-pawnshop:client:openMelt', function(data)
                 if v.name == data.items[i].item then
                     meltMenu[#meltMenu + 1] = {
                         title = exports.ox_inventory:Items()[v.name].label,
-                        description = Lang:t('info.melt_item', { value = exports.ox_inventory:Items()[v.name].label }),
+                        description = locale('info.melt_item', exports.ox_inventory:Items()[v.name].label ),
                         event = 'qb-pawnshop:client:meltItems',
                         args = {
                             label = exports.ox_inventory:Items()[v.name].label,
@@ -206,7 +206,7 @@ RegisterNetEvent('qb-pawnshop:client:openMelt', function(data)
         lib.registerContext({
             id = 'open_meltMenu',
             menu = 'open_pawnShop',
-            title = Lang:t('info.title'),
+            title = locale('info.title'),
             options = meltMenu
         })
         lib.showContext('open_meltMenu')
@@ -214,34 +214,34 @@ RegisterNetEvent('qb-pawnshop:client:openMelt', function(data)
 end)
 
 RegisterNetEvent('qb-pawnshop:client:pawnitems', function(item)
-    local sellingItem = lib.inputDialog(Lang:t('info.title'), {
+    local sellingItem = lib.inputDialog(locale('info.title'), {
         {
             type = 'number',
             label = 'amount',
-            placeholder = Lang:t('info.max', { value = item.amount })
+            placeholder = locale('info.max', item.amount )
         }
     })
     if sellingItem then
         if not sellingItem[1] or sellingItem[1] <= 0 then return end
         TriggerServerEvent('qb-pawnshop:server:sellPawnItems', item.name, sellingItem[1], item.price)
     else
-        exports.qbx_core:Notify(Lang:t('error.negative'), 'error')
+        exports.qbx_core:Notify(locale('error.negative'), 'error')
     end
 end)
 
 RegisterNetEvent('qb-pawnshop:client:meltItems', function(item)
-    local meltingItem = lib.inputDialog(Lang:t('info.melt'), {
+    local meltingItem = lib.inputDialog(locale('info.melt'), {
         {
             type = 'number',
             label = 'amount',
-            placeholder = Lang:t('info.max', { value = item.amount })
+            placeholder = locale('info.max', item.amount )
         }
     })
     if meltingItem then
         if not meltingItem[1] or meltingItem[1] <= 0 then return end
         TriggerServerEvent('qb-pawnshop:server:meltItemRemove', item.name, meltingItem[1], item)
     else
-        exports.qbx_core:Notify(Lang:t('error.no_melt'), 'error')
+        exports.qbx_core:Notify(locale('error.no_melt'), 'error')
     end
 end)
 
@@ -260,13 +260,13 @@ RegisterNetEvent('qb-pawnshop:client:startMelting', function(item, meltingAmount
                         table.insert(meltedItem, { item = item, amount = meltingAmount })
                         if config.sendMeltingEmail then
                             TriggerServerEvent('qb-phone:server:sendNewMail', {
-                                sender = Lang:t('info.title'),
-                                subject = Lang:t('info.subject'),
-                                message = Lang:t('info.message'),
+                                sender = locale('info.title'),
+                                subject = locale('info.subject'),
+                                message = locale('info.message'),
                                 button = {}
                             })
                         else
-                            exports.qbx_core:Notify(Lang:t('info.message'), 'success')
+                            exports.qbx_core:Notify(locale('info.message'), 'success')
                         end
                     end
                 else
